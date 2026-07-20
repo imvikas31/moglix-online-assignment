@@ -53,13 +53,38 @@ The longest valid parentheses substring is `"()()"`.
 
 ---
 
-## Solution Approach
+## Brute Force Approach
+
+The brute force approach is based on checking **every possible substring** of the given string and determining whether it forms a **valid parentheses sequence**.
+
+### Steps
+
+1. Generate all possible substrings using **two nested loops**:
+   - The outer loop selects the **starting index** of the substring.
+   - The inner loop selects the **ending index** of the substring.
+
+2. For each generated substring:
+   - Traverse it character by character.
+   - Maintain a counter:
+     - Increment the counter for every `'('`.
+     - Decrement the counter for every `')'`.
+   - If the counter becomes **negative** at any point, the substring is invalid because there are more closing parentheses than opening parentheses.
+   - After traversing the entire substring, it is considered **valid** only if the counter is exactly `0`, indicating that every opening parenthesis has a matching closing parenthesis.
+
+3. If the current substring is valid, update the maximum length found so far.
+
+4. After checking all possible substrings, return the maximum valid substring length.
 
 ---
 
-### Intuition
+## Algorithm
 
-### Algorithm
+1. Initialize `maxLength = 0`.
+2. Generate every possible substring of the input string.
+3. For each substring:
+   - Check whether it is a valid parentheses sequence.
+   - If it is valid, update `maxLength` with the larger of the current maximum and the substring's length.
+4. Return `maxLength`.
 
 ---
 
@@ -67,7 +92,9 @@ The longest valid parentheses substring is `"()()"`.
 
 | Operation | Complexity |
 |-----------|------------|
-| Overall |  |
+| Generating all substrings | O(n²) |
+| Checking each substring| O(n) |
+| Overall | O(n³) |
 
 ---
 
@@ -75,7 +102,7 @@ The longest valid parentheses substring is `"()()"`.
 
 | Memory Usage | Complexity |
 |--------------|------------|
-| Extra Space |  |
+| Extra Space | O(n) |
 
 ---
 
@@ -94,6 +121,8 @@ The longest valid parentheses substring is `"()()"`.
 ---
 
 ## Language Used
+
+> C++
 
 
 ---
