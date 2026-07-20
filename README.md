@@ -106,7 +106,79 @@ The brute force approach is based on checking **every possible substring** of th
 
 ---
 
-## Edge Cases Considered
+## Optimal Approach (Using Stack)
+
+The optimal solution uses a **stack** to efficiently track the indices of unmatched parentheses while traversing the string only once.
+
+Instead of storing the parentheses themselves, the stack stores their **indices**. This allows us to calculate the length of a valid substring whenever a matching pair is found.
+
+### Why do we push `-1` initially?
+
+Before starting the traversal, we push `-1` onto the stack.
+
+- It acts as a **base index** for calculating the length of valid substrings.
+- It correctly handles cases where a valid substring starts from index `0`.
+
+For example:
+
+```text
+s = "()()"
+```
+
+When the first valid pair is found at index `1`, its length is:
+
+```text
+1 - (-1) = 2
+```
+
+Without `-1`, this calculation would not be possible.
+
+---
+
+## Steps
+
+1. Create an empty stack and push `-1` onto it.
+2. Traverse the string from left to right.
+3. If the current character is `'('`, push its index onto the stack.
+4. If the current character is `')'`:
+   - Pop the top element from the stack.
+   - If the stack becomes empty after popping, push the current index onto the stack. This index becomes the new base for future valid substrings.
+   - Otherwise, calculate the length of the current valid substring as:
+
+     ```text
+     current_index - stack.top()
+     ```
+
+     Update the maximum length if this value is larger than the current maximum.
+5. After processing all characters, return the maximum length.
+
+---
+
+## Algorithm
+
+1. Initialize an empty stack.
+2. Push `-1` onto the stack.
+3. Initialize `maxLength = 0`.
+4. Traverse the string:
+   - If the current character is `'('`, push its index.
+   - Otherwise:
+     - Pop the stack.
+     - If the stack is empty:
+       - Push the current index.
+     - Else:
+       - Update `maxLength = max(maxLength, current_index - stack.top())`.
+5. Return `maxLength`.
+
+---
+
+## Complexity Analysis
+
+- **Time Complexity:** `O(n)`
+  - Each index is pushed onto and popped from the stack at most once.
+
+- **Space Complexity:** `O(n)`
+  - In the worst case (all `'('`), the stack stores all indices.
+
 
 ---
 
@@ -115,7 +187,7 @@ The brute force approach is based on checking **every possible substring** of th
 ```
 .
 ├── README.md
-└── 
+└── solution.cpp
 ```
 
 ---

@@ -1,40 +1,79 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-// Brute Force Approach
-bool isValidString(string str) {
-    int count = 0;
+// Function for Brute Force Approach
+// bool isValidString(string str) {
+//     int count = 0;
 
-    for (char ch : str) {
-        if (ch == '(')
-            count++;
-        else
-            count--;
+//     for (char ch : str) {
+//         if (ch == '(')
+//             count++;
+//         else
+//             count--;
 
-        // closing brackets more than opening brackets
-        if (count < 0)
-            return false;
-    }
+//         // closing brackets more than opening brackets
+//         if (count < 0)
+//             return false;
+//     }
 
-    // if all opening brackets are matched
-    return count == 0;
-}
+//     // if all opening brackets are matched
+//     return count == 0;
+// }
 
-// Brute Force Solution
+// // Brute Force Solution
+// int longestValidParentheses(string s) {
+//     int n = s.length();
+//     int maxLength = 0;
+//     int start;
+//     int end;
+
+//     // Generate all possible substrings
+//     for (int start = 0; start < n; start++) {
+//         for (int end = start; end < n; end++) {
+
+//             string sub = s.substr(start, end - start + 1);
+
+//             if (isValidString(sub)) {
+//                 maxLength = max(maxLength, end - start + 1);
+//             }
+//         }
+//     }
+
+//     return maxLength;
+// }
+
+
+// Function for Optimal Approach (Using Stack)
 int longestValidParentheses(string s) {
-    int n = s.length();
+    stack<int> st;
+
+    // Push a base index to handle valid substrings
+    // starting from index 0
+    st.push(-1);
+
     int maxLength = 0;
-    int start;
-    int end;
 
-    // Generate all possible substrings
-    for (int start = 0; start < n; start++) {
-        for (int end = start; end < n; end++) {
+    for (int i = 0; i < s.length(); i++) {
 
-            string sub = s.substr(start, end - start + 1);
+        // If current character is an opening bracket,
+        // push its index onto the stack.
+        if (s[i] == '(') {
+            st.push(i);
+        }
+        else {
 
-            if (isValidString(sub)) {
-                maxLength = max(maxLength, end - start + 1);
+            // Pop the previous opening bracket (or base index)
+            st.pop();
+
+            // If the stack becomes empty, push the current
+            // index as the new base index.
+            if (st.empty()) {
+                st.push(i);
+            }
+            else {
+                // Calculate the length of the current
+                // valid parentheses substring.
+                maxLength = max(maxLength, i - st.top());
             }
         }
     }
@@ -49,6 +88,14 @@ int main(){
     cin>>s;
 
     cout<<endl;
+
+    // Calling Function for Brute Force Approach
+
+    // int ans = longestValidParentheses(s);
+    // cout<<"Length of the longest valid (well-formed) parentheses substring : "<<ans<<endl;
+
+
+    // Calling Function for Optimal Approach
 
     int ans = longestValidParentheses(s);
     cout<<"Length of the longest valid (well-formed) parentheses substring : "<<ans<<endl;
